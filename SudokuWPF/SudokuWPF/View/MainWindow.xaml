@@ -1,0 +1,36 @@
+﻿<Window x:Class="SudokuWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SudokuWPF"
+        mc:Ignorable="d"
+        Title="Sudoku" Height="350" Width="525" WindowStartupLocation="CenterScreen" Icon="/SudokuWPF;component/Images/Sudoku.png">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <Button Margin="5" Command="{Binding ClickNuevoJuegoCommand}">Nuevo Juego</Button>
+            <Button Margin="5" Command="{Binding ClickPistaCommand}">Pista</Button>
+            <Button Margin="5" Command="{Binding ClickResolverCommand}">Resolver</Button>
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <ItemsControl ItemsSource="{Binding Celdas}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBox Text="{Binding Texto,UpdateSourceTrigger=PropertyChanged}" Background="{Binding Background}" FontSize="18.667" IsReadOnly="{Binding IsFixed}" FontWeight="Bold" TextAlignment="Center"></TextBox>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="{Binding NumRows}" Columns="{Binding NumColumns}">
+                            
+                        </UniformGrid>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </Grid>
+    </Grid>
+</Window>
