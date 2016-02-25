@@ -22,15 +22,26 @@ namespace SudokuWPF.ViewModel
         int[,] BoardCurrent;
         int numHoles = 40;
         bool btnResolverPulsado = false;
-
+        List<string> lstDificultad = new List<string>();
+        string selectedDificultad = DIFICULTAD_FACIL;
+        const string DIFICULTAD_FACIL = "Facil";
+        const string DIFICULTAD_INTERMEDIO = "Intermedio";
+        const string DIFICULTAD_DIFICIL = "Dificil";
 
         public MainViewModel()
         {
+            LstDificultad = new List<string>();
+            LstDificultad.Add(DIFICULTAD_FACIL);
+            LstDificultad.Add(DIFICULTAD_INTERMEDIO);
+            LstDificultad.Add(DIFICULTAD_DIFICIL);
+
             NuevoJuego();
         }
 
         private void NuevoJuego()
         {
+            numHoles = GetNumHolesByDificultad();
+
             btnResolverPulsado = false;
             SudokuGenerator sg = new SudokuGenerator();
             bool solved = false;
@@ -73,6 +84,20 @@ namespace SudokuWPF.ViewModel
             }
 
             RaisePropertyChanged("Celdas");
+        }
+
+        private int GetNumHolesByDificultad()
+        {
+            switch (SelectedDificultad)
+            {
+                case DIFICULTAD_FACIL:
+                    return 20;
+                case DIFICULTAD_INTERMEDIO:
+                    return 30;
+                case DIFICULTAD_DIFICIL:
+                    return 40;
+            }
+            return 40; 
         }
 
         private void CellVMNumberChanged(object sender, NumberChangedEventArgs e)
@@ -146,6 +171,34 @@ namespace SudokuWPF.ViewModel
             }
         }
 
+        public string SelectedDificultad
+        {
+            get
+            {
+                return selectedDificultad;
+            }
+
+            set
+            {
+                selectedDificultad = value;
+                RaisePropertyChanged("SelectedDificultad");
+            }
+        }
+
+        public List<string> LstDificultad
+        {
+            get
+            {
+                return lstDificultad;
+            }
+
+            set
+            {
+                lstDificultad = value;
+                RaisePropertyChanged("LstDificultad");
+            }
+        }
+
 
         #region ClickNuevoJuegoCommand
 
@@ -207,6 +260,8 @@ namespace SudokuWPF.ViewModel
                 return _clickResolverCommand ?? (_clickResolverCommand = new CommandHandler(() => MyActionResolver(), CanExecuteActionResolver()));
             }
         }
+
+        
 
         private bool CanExecuteActionResolver()
         {
